@@ -1,3 +1,5 @@
+from django.http.response import Http404
+from django.http import HttpResponse,Http404,HttpResponseRedirect,JsonResponse
 from django.shortcuts import render
 from .models import Subject
 from .serializer import SubjectSerializer
@@ -18,3 +20,16 @@ class SubjectList(APIView):
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SubjectDescription(APIView):
+    # permission_classes = (IsAdminOrReadOnly,)
+    def get_subject(self, pk):
+        try:
+            return Subject.objects.get(pk=pk)
+        except Subject.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, format=None):
+        subject = self.get_subject(pk)
+        serializers = SubjectSerializer(subject)
+        return Response(serializers.data)

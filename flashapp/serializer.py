@@ -4,4 +4,4 @@ from .models import Subject
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model=Subject
-        fields=('title','subject', 'description')
+        fields=('id','title','subject', 'description')
