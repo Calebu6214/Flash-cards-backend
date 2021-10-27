@@ -6,9 +6,11 @@ from .serializer import SubjectSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from .permissions import IsAdminOrReadOnly
 # Create your views here.
 
 class SubjectList(APIView):
+    permission_classes = (IsAdminOrReadOnly,)
     def get(self, request, format=None):
         all_sub = Subject.objects.all()
         serializers = SubjectSerializer(all_sub, many=True)
@@ -22,7 +24,7 @@ class SubjectList(APIView):
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SubjectDescription(APIView):
-    # permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (IsAdminOrReadOnly,)
     def get_subject(self, pk):
         try:
             return Subject.objects.get(pk=pk)
