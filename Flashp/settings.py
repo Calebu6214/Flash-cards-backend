@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth.registration',
     'cloudinary',
+    'drf_yasg',
 ]
 SITE_ID=1
 
@@ -184,3 +185,12 @@ cloudinary.config(
   api_key = "269751858693992", 
   api_secret = "_DxCl6i-tG2Uid69wiM70l3iQxM" 
 )
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
