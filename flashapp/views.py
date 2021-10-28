@@ -5,15 +5,16 @@ from .models import Subject
 from .serializer import SubjectSerializer,UserSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
-from .permissions import IsAdminOrReadOnly
+from rest_framework import status,viewsets,permissions
+from flashapp import permissions
+from .permissions import IsAuthenticatedOrReadOnly
 from flashapp import models
 
 from flashapp import serializer
 # Create your views here.
 
 class SubjectList(APIView):
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     def get(self, request, format=None):
         all_sub = Subject.objects.all()
         serializers = SubjectSerializer(all_sub, many=True)
@@ -27,7 +28,7 @@ class SubjectList(APIView):
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SubjectDescription(APIView):
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     def get_subject(self, pk):
         try:
             return Subject.objects.get(pk=pk)
@@ -53,6 +54,6 @@ class SubjectDescription(APIView):
         subjects.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class UserViewSet(APIView):
+class UserViewSet(viewsets.ModelViewSet):
     subjects=models.User.objects.all()
     serializer_class=UserSerializer
