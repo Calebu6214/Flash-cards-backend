@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-z51%_f)$*7jnnr-88w@#lgt=sg8!3r)f2fn*#lgcz9)c66*%2^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'Flashp.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 MODE=config("MODE", default="dev")
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = os.environ.get('DEBUG', False)
 # development
 if config('MODE')=="dev":
     DATABASES = {
